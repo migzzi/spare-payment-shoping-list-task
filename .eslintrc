@@ -1,0 +1,22 @@
+{
+	"extends": ["eslint-config-prettier"],
+	"plugins": ["prettier"],
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"rules": {
+		"max-len": [2, 140, 8],
+		"prefer-spread": "error",
+		"no-var-keyword": "warn",
+		"no-use-before-declar": "warn",
+		"no-consecutive-blank-lines": "always",
+		"camelcase": [2, { "properties": "always" }],
+		"no-implicit-globals": "error",
+		"no-multiple-empty-lines": ["error", { "min": 2, "max": 8 }]
+	},
+	"env": {
+		"node": true,
+		"es6": true
+	}
+}
