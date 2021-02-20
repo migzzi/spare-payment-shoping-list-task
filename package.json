@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/migzzi/spare-payment-shoping-list-task#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "class-validator": "^0.13.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1"
   },
