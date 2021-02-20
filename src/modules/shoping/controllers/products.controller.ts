@@ -70,3 +70,20 @@ ProductsRouter.put('/product/:id', async (req, res) => {
 		message: 'Product is updated successfully'
 	});
 });
+
+ProductsRouter.delete('/product/:id', (req, res) => {
+	let prodToDelete = db.products.findIndex(r => r.id === parseInt(req.params.id));
+
+	if (prodToDelete < 0)
+		return res.json({
+			success: false,
+			message: `Product with id #${req.params.id} was not found.`
+		});
+
+	db.products.splice(prodToDelete, 1);
+
+	return res.json({
+		success: true,
+		message: 'Product is deleted successfully'
+	});
+});
