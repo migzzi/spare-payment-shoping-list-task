@@ -35,3 +35,38 @@ ProductsRouter.post('/products', async (req, res) => {
 		});
 	}
 });
+
+ProductsRouter.put('/product/:id', async (req, res) => {
+	//Find the product first to construct the domain enitity.
+	let prodToUpdate = db.products.find(r => r.id === parseInt(req.params.id));
+
+	if (!prodToUpdate)
+		return res.json({
+			success: false,
+			message: `Product with id #${req.params.id} was not found.`
+		});
+	//Now extract the modifiable properties from request.
+	let newData = getPropertiesFromRequest<CreateProductDto>(['name', 'price', 'quantity'], req.body);
+	let newProd = new Product(prodToUpdate.id, {
+		...prodToUpdate,
+		...newData
+	});
+
+	try {
+		await validateOrReject(newProd);
+	} catch (errors) {
+		console.error('Caught promise rejection (validation failed). Errors: ', errors);
+		return res.json({
+			success: false,
+			errors
+		});
+	}
+	//actually update the product
+	transfereObject(prodToUpdate, newData);
+
+	return res.json({
+		success: true,
+		data: newProd,
+		message: 'Product is updated successfully'
+	});
+});

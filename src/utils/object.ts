@@ -6,3 +6,9 @@ export function getPropertiesFromRequest<T>(props: string[], body: any): T {
 			return agg;
 		}, {});
 }
+
+export function transfereObject(src: any, dst: any) {
+	Object.keys(dst).forEach((k: string) => {
+		src[k] = dst[k];
+	});
+}
