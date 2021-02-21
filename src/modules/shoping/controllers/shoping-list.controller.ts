@@ -70,3 +70,34 @@ ShopingListRouter.put('/shoping-list/item/add', (req, res) => {
 		message: 'Item added successfully.'
 	});
 });
+
+ShopingListRouter.put('/shoping-list/item/:id/remove', (req, res) => {
+	let itemId = parseInt(req.params.id),
+		item = db.shopingList.find(item => item.id === itemId);
+	// If invalid item id
+	if (!item) {
+		return res.json({
+			success: false,
+			message: `No item with id #${itemId} was found.`
+		});
+	}
+	let productToRemove = db.products.find(p => p.id === item.product_id);
+	// This case shouldn't be possible if an item was added correctly
+	// but I'm just being a little deffensive (Because always expect the unexpected, right?).
+	if (!productToRemove)
+		return res.json({
+			success: false,
+			message: `No product with id #${productToRemove.id} was found.`
+		});
+
+	// Return the requested quantity to the stock.
+	transfereObject(productToRemove, { quantity: productToRemove.quantity + item.quantity });
+
+	let itemIndex = db.shopingList.findIndex(item => item.id === itemId);
+	db.shopingList.splice(itemIndex, 1);
+
+	return res.json({
+		success: true,
+		message: 'Item removed successfully.'
+	});
+});
