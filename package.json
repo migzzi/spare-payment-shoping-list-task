@@ -6,6 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.ts",
+    "start:dev": "npm start",
+    "start:prod": "npm run build && node build/",
     "build": "npx tsc --project ./"
   },
   "repository": {
