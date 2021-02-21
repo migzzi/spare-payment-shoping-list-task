@@ -23,14 +23,14 @@ ProductsRouter.post('/products', async (req, res) => {
 	try {
 		await validateOrReject(newProd);
 		db.products.push(newProd);
-		return res.json({
+		return res.status(201).json({
 			success: true,
 			data: newProd,
 			message: 'Product added successfully'
 		});
 	} catch (errors) {
 		console.error('Caught promise rejection (validation failed). Errors: ', errors);
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			errors
 		});
@@ -42,7 +42,7 @@ ProductsRouter.put('/product/:id', async (req, res) => {
 	let prodToUpdate = db.products.find(r => r.id === parseInt(req.params.id));
 
 	if (!prodToUpdate)
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			message: `Product with id #${req.params.id} was not found.`
 		});
@@ -56,8 +56,7 @@ ProductsRouter.put('/product/:id', async (req, res) => {
 	try {
 		await validateOrReject(newProd);
 	} catch (errors) {
-		console.error('Caught promise rejection (validation failed). Errors: ', errors);
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			errors
 		});
@@ -76,7 +75,7 @@ ProductsRouter.delete('/product/:id', (req, res) => {
 	let prodToDelete = db.products.findIndex(r => r.id === parseInt(req.params.id));
 
 	if (prodToDelete < 0)
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			message: `Product with id #${req.params.id} was not found.`
 		});
