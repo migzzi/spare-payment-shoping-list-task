@@ -25,7 +25,8 @@ ProductsRouter.post('/products', async (req, res) => {
 		db.products.push(newProd);
 		return res.json({
 			success: true,
-			data: newProd
+			data: newProd,
+			message: 'Product added successfully'
 		});
 	} catch (errors) {
 		console.error('Caught promise rejection (validation failed). Errors: ', errors);
