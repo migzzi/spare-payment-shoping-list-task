@@ -31,13 +31,13 @@ ShopingListRouter.put('/shoping-list/item/add', (req, res) => {
 
 	// Case of invalid product
 	if (!productToAdd)
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			message: `No product with id #${productId} was found.`
 		});
 	// Case of not enough quantity in stock
 	if (productToAdd.quantity < requestedQty)
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			message: 'No enough quantity available in stock.'
 		});
@@ -47,9 +47,10 @@ ShopingListRouter.put('/shoping-list/item/add', (req, res) => {
 	// and will update the quantity of the already selected item.
 	let item = db.shopingList.find(item => item.product_id === productToAdd.id);
 	if (item) {
-		transfereObject(item, { quantity: requestedQty });
 		// If item already exists then just deduct/add the difference between old and new quantities.
 		transfereObject(productToAdd, { quantity: productToAdd.quantity - (requestedQty - item.quantity) });
+		transfereObject(item, { quantity: requestedQty });
+
 		return res.json({
 			success: true,
 			message: "Updated selected item's quantity."
@@ -76,7 +77,7 @@ ShopingListRouter.put('/shoping-list/item/:id/remove', (req, res) => {
 		item = db.shopingList.find(item => item.id === itemId);
 	// If invalid item id
 	if (!item) {
-		return res.json({
+		return res.status(404).json({
 			success: false,
 			message: `No item with id #${itemId} was found.`
 		});
@@ -85,7 +86,7 @@ ShopingListRouter.put('/shoping-list/item/:id/remove', (req, res) => {
 	// This case shouldn't be possible if an item was added correctly
 	// but I'm just being a little deffensive (Because always expect the unexpected, right?).
 	if (!productToRemove)
-		return res.json({
+		return res.status(400).json({
 			success: false,
 			message: `No product with id #${productToRemove.id} was found.`
 		});
