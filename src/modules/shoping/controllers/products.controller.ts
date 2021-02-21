@@ -80,7 +80,15 @@ ProductsRouter.delete('/product/:id', (req, res) => {
 			message: `Product with id #${req.params.id} was not found.`
 		});
 
+	// Delete the product
 	db.products.splice(prodToDelete, 1);
+
+	// Now lets delete any refrence to it in the shoping list
+	// TODO this should be done as a side effect. Maybe use an event emitter to keep this portion decoupled from the product deletion logic.
+	let shopingListItemToDelete = db.shopingList.findIndex(r => r.product_id === parseInt(req.params.id));
+	if (shopingListItemToDelete > -1) db.shopingList.splice(shopingListItemToDelete, 1);
+
+	// Delete the product
 
 	return res.json({
 		success: true,
