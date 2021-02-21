@@ -6,14 +6,14 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.ts",
-    "build": "tsc --project ./"
+    "build": "npx tsc --project ./"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/migzzi/spare-payment-shoping-list-task.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Maged Magdy",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/migzzi/spare-payment-shoping-list-task/issues"
